@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'news_api' => [
+        'key' => 'a709ea6fe90e45ad934fbb54d39ad9ed',
+        'base_url' => 'https://newsapi.org/v2/'
+    ],
 ];
