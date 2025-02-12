@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\ApiResponseHelper;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class LoginRequest extends FormRequest
 {
@@ -26,5 +29,16 @@ class LoginRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'required',
         ];
+    }
+
+    /**
+     * @param Validator $validator
+     * @return mixed
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponseHelper::error('Validation failed', $validator->errors(), 422)
+        );
     }
 }

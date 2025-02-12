@@ -39,4 +39,9 @@ return [
         'key' => 'a709ea6fe90e45ad934fbb54d39ad9ed',
         'base_url' => 'https://newsapi.org/v2/'
     ],
+
+    'the_guardian' => [
+        'key' => '62a95103-7fdc-477e-b936-b6d2d7ae021d',
+        'base_url' => 'https://content.guardianapis.com/'
+    ],
 ];

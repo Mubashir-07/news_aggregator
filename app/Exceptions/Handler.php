@@ -18,7 +18,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e): JsonResponse|Response
     {
-        dd(123);
         if ($e instanceof ValidationException) {
             return ApiResponseHelper::error('Validation failed', $e->errors(), 422);
         }

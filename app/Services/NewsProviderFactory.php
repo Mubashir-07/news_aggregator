@@ -3,19 +3,20 @@
 namespace App\Services;
 
 use App\Services\NewsProviders\NewsAPIProvider;
-use App\Services\NewsProviders\NewsCredProvider;
+use App\Services\NewsProviders\TheGuardianProvider;
 
 class NewsProviderFactory
 {
+
     /**
      * @param string $provider
-     * @return NewsAPIProvider|NewsCredProvider
+     * @return NewsAPIProvider|TheGuardianProvider
      */
     public static function make(string $provider)
     {
         return match ($provider) {
             'newsapi' => new NewsAPIProvider(),
-            'newscred' => new NewsCredProvider(),
+            'the_guardian' => new TheGuardianProvider(),
         };
     }
 }

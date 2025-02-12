@@ -4,7 +4,7 @@ namespace App\Http\Controllers\News;
 
 use App\Helpers\ApiResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FetchNewsRequest;
+use App\Http\Requests\FetchArticlesRequest;
 use App\Http\Requests\FetchTopHeadlineRequest;
 use App\Services\NewsProviderFactory;
 use Illuminate\Http\JsonResponse;
@@ -12,10 +12,10 @@ use Illuminate\Http\JsonResponse;
 class NewsController extends Controller
 {
     /**
-     * @param FetchNewsRequest $request
+     * @param FetchArticlesRequest $request
      * @return JsonResponse
      */
-    public function getArticles(FetchNewsRequest $request)
+    public function getArticles(FetchArticlesRequest $request)
     {
         $provider = $request->input('provider', 'newsapi');
         $newsService = NewsProviderFactory::make($provider);

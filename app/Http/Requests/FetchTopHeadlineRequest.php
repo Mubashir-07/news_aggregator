@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\ApiResponseHelper;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FetchTopHeadlineRequest extends FormRequest
 {
@@ -29,5 +32,16 @@ class FetchTopHeadlineRequest extends FormRequest
             'pageSize' => 'numeric',
             'sources' => 'required',
         ];
+    }
+
+    /**
+     * @param Validator $validator
+     * @return mixed
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponseHelper::error('Validation failed', $validator->errors(), 422)
+        );
     }
 }
