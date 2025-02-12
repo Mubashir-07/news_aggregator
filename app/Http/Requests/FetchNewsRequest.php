@@ -6,6 +6,7 @@ use App\Helpers\ApiResponseHelper;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FetchNewsRequest extends FormRequest
 {
@@ -32,9 +33,11 @@ class FetchNewsRequest extends FormRequest
             'pageSize' => 'numeric',
         ];
     }
-//
-//    public function failedValidation(Validator $validator)
-//    {
-//        return ApiResponseHelper::error('Validation failed', $validator->errors(), 422);
-//    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            ApiResponseHelper::error('Validation failed', $validator->errors(), 422)
+        );
+    }
 }
