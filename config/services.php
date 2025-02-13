@@ -44,4 +44,9 @@ return [
         'key' => '62a95103-7fdc-477e-b936-b6d2d7ae021d',
         'base_url' => 'https://content.guardianapis.com/'
     ],
+
+    'nyt' => [
+        'key' => 'cm5tjhUzNkktslHaZsGokMHhwQkh0ZNd',
+        'base_url' => 'https://api.nytimes.com/svc'
+    ],
 ];
