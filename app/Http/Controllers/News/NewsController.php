@@ -57,4 +57,29 @@ class NewsController extends Controller
             $newsService->fetchTopHeadlines($params)
         ], 201);
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getPersonalizedNews()
+    {
+        $user = Auth::user();
+        $preferences = $user->preference;
+
+        if (!$preferences || empty($preferences->preferred_providers))
+            return ApiResponseHelper::error('No preferred providers set.', []);
+
+        $provider = $preferences->preferred_providers[0];
+        $newsService = NewsProviderFactory::make($provider);
+
+        $params = $newsService->fetchArticles([
+            'sources' => $preferences->preferred_sources ?? [],
+            'category' => $preferences->preferred_categories ?? [],
+            'authors' => $preferences->preferred_authors ?? [],
+        ]);
+
+        return ApiResponseHelper::success('Articles fetched with preferences successfully', [
+            $newsService->fetchArticles($params)
+        ], 201);
+    }
 }

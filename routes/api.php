@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\News\NewsController;
+use App\Http\Controllers\News\UserPreferenceController;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -13,4 +14,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/articles', [NewsController::class, 'getArticles']);
     Route::get('/top-headlines', [NewsController::class, 'getTopHeadlines']);
+
+    Route::post('/preferences', [UserPreferenceController::class, 'store']);
+    Route::get('/preferences', [UserPreferenceController::class, 'show']);
+    Route::get('/personalized-news', [NewsController::class, 'getPersonalizedNews']);
+
 });
