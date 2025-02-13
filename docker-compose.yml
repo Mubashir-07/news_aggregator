@@ -1,0 +1,76 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: mubashir
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: news-aggregator
+    container_name: news-aggregator-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - news-aggregator
+
+  db:
+    image: mysql:8.0
+    container_name: news-aggregator-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - news-aggregator
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: news-aggregator-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db  # Host is the MySQL service name
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}  # Same as MySQL root password
+      UPLOAD_LIMIT: 100M  # Set the max upload limit here
+    depends_on:
+      - db
+    ports:
+      - "8080:80"  # Access phpMyAdmin via localhost:8080
+    networks:
+      - news-aggregator
+
+  nginx:
+    image: nginx:alpine
+    container_name: news-aggregator-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - news-aggregator
+  redis:
+    image: redis:alpine
+    container_name: redis_container
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - news-aggregator
+networks:
+  news-aggregator:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
