@@ -3,9 +3,12 @@
 namespace App\Services\NewsProviders;
 
 use App\Interfaces\NewsProviderInterface;
+use App\Traits\MakeApiCall;
 
 class NewsAPIProvider implements NewsProviderInterface
 {
+    use MakeApiCall;
+
     protected mixed $baseUrl;
     protected mixed $apiKey;
 
@@ -28,38 +31,10 @@ class NewsAPIProvider implements NewsProviderInterface
                 'apiKey' => $this->apiKey,
             ]));
 
-        return $this->makeRequest($url);
-    }
+        $response = ($this->makeRequest($url));
+        $data = json_decode($response, true);
 
-    /**
-     * @param $url
-     * @return mixed
-     */
-    function makeRequest($url)
-    {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 120,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Accept: application/json',
-                'User-Agent: ' . config('app.name', 'News Aggregator'),
-            ],
-        ]);
-
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        return json_decode($response, true)['articles'];
+        return $data['articles'] ?? [];
     }
 
     /**
@@ -72,6 +47,9 @@ class NewsAPIProvider implements NewsProviderInterface
                 'apiKey' => $this->apiKey,
             ]));
 
-        return $this->makeRequest($url);
+        $response = ($this->makeRequest($url));
+        $data = json_decode($response, true);
+
+        return $data['articles'] ?? [];
     }
 }

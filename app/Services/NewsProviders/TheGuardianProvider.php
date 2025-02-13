@@ -3,9 +3,12 @@
 namespace App\Services\NewsProviders;
 
 use App\Interfaces\NewsProviderInterface;
+use App\Traits\MakeApiCall;
 
 class TheGuardianProvider implements NewsProviderInterface
 {
+    use MakeApiCall;
+
     protected mixed $baseUrl;
     protected mixed $apiKey;
 
@@ -29,31 +32,9 @@ class TheGuardianProvider implements NewsProviderInterface
                 'show-fields' => 'headline,byline,thumbnail,body'
             ]));
 
-        return $this->makeRequest($url);
-    }
-
-    /**
-     * @param $url
-     * @return mixed
-     */
-    function makeRequest($url)
-    {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTPHEADER => [
-                'Accept: application/json',
-                'User-Agent: ' . config('app.name', 'News Aggregator'),
-            ],
-        ]);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        return json_decode($response, true)['response']['results'];
+        $response = ($this->makeRequest($url));
+        $data = json_decode($response, true);
+        return $data['response']['results'] ?? [];
     }
 
     /**
@@ -68,6 +49,8 @@ class TheGuardianProvider implements NewsProviderInterface
                 'show-fields' => 'headline,byline,thumbnail,body'
             ]));
 
-        return $this->makeRequest($url);
+        $response = ($this->makeRequest($url));
+        $data = json_decode($response, true);
+        return $data['response']['results'] ?? [];
     }
 }
