@@ -17,7 +17,11 @@ class NewsController extends Controller
      */
     public function getArticles(FetchArticlesRequest $request)
     {
-        $provider = $request->input('provider', 'newsapi');
+        $provider = $request->input('provider', 'news_api');
+        $validProviders = ['news_api', 'the_guardian', 'nyt'];
+        if (!in_array($provider, $validProviders))
+            return ApiResponseHelper::error('Invalid news provider', []);
+
         $newsService = NewsProviderFactory::make($provider);
 
         $params = [
