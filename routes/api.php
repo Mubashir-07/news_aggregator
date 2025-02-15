@@ -15,8 +15,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/articles', [NewsController::class, 'getArticles']);
     Route::get('/top-headlines', [NewsController::class, 'getTopHeadlines']);
 
-    Route::post('/preferences', [UserPreferenceController::class, 'store']);
-    Route::get('/preferences', [UserPreferenceController::class, 'show']);
+    Route::post('/storePreferences', [UserPreferenceController::class, 'store']);
+    Route::get('/showPreferences', [UserPreferenceController::class, 'show']);
     Route::get('/personalized-news', [NewsController::class, 'getPersonalizedNews']);
 
 });

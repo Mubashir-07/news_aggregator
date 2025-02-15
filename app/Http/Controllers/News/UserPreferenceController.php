@@ -20,7 +20,11 @@ class UserPreferenceController extends Controller
         $user = Auth::user();
         $preferences = UserPreference::updateOrCreate(
             ['user_id' => $user->id],
-            $request->only(['preferred_sources', 'preferred_categories', 'preferred_authors', 'preferred_providers'])
+            $request->only([
+                'provider',
+                'keyword',
+                'source',
+            ])
         );
 
         return ApiResponseHelper::success('Preferences saved successfully', $preferences, 201);

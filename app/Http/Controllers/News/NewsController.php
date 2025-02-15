@@ -5,9 +5,11 @@ namespace App\Http\Controllers\News;
 use App\Helpers\ApiResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FetchArticlesRequest;
+use App\Http\Requests\FetchPersonalizedNewsRequest;
 use App\Http\Requests\FetchTopHeadlineRequest;
 use App\Services\NewsProviderFactory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller
 {
@@ -61,22 +63,23 @@ class NewsController extends Controller
     /**
      * @return JsonResponse
      */
-    public function getPersonalizedNews()
+    public function getPersonalizedNews(FetchPersonalizedNewsRequest $request)
     {
         $user = Auth::user();
         $preferences = $user->preference;
 
-        if (!$preferences || empty($preferences->preferred_providers))
+        if (!$preferences || empty($preferences->provider))
             return ApiResponseHelper::error('No preferred providers set.', []);
 
-        $provider = $preferences->preferred_providers[0];
+        $provider = $preferences->provider;
         $newsService = NewsProviderFactory::make($provider);
 
-        $params = $newsService->fetchArticles([
-            'sources' => $preferences->preferred_sources ?? [],
-            'category' => $preferences->preferred_categories ?? [],
-            'authors' => $preferences->preferred_authors ?? [],
-        ]);
+        $params = [
+            'q' => $preferences->keyword,
+            'sources' => $preferences->source,
+            'page' => $request->input('page', 1),
+            'pageSize' => $request->input('pageSize', 10),
+        ];
 
         return ApiResponseHelper::success('Articles fetched with preferences successfully', [
             $newsService->fetchArticles($params)

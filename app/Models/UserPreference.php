@@ -12,9 +12,9 @@ class UserPreference extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'preferred_sources' => 'array',
-        'preferred_categories' => 'array',
-        'preferred_authors' => 'array',
-        'preferred_providers' => 'array',
+        'sources' => 'array',
+        'categories' => 'array',
+        'authors' => 'array',
+        'providers' => 'array',
     ];
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserPreferenceRequest extends FormRequest
+class FetchPersonalizedNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,14 +15,15 @@ class UserPreferenceRequest extends FormRequest
     }
 
     /**
-     * @return string[]
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'provider' => 'required',
-            'keyword' => 'required',
-            'source' => 'required',
+            'page' => 'required',
+            'pageSize' => 'required',
         ];
     }
 }

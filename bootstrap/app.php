@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\RenderException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,5 +17,5 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(EnsureFrontendRequestsAreStateful::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(new RenderException());
     })->create();
