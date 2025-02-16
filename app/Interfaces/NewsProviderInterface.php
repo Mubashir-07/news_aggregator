@@ -2,6 +2,11 @@
 
 namespace App\Interfaces;
 
+/**
+ * Interface NewsProviderInterface
+ *
+ * Defines the contract for news provider integrations.
+ */
 interface NewsProviderInterface
 {
     public function fetchArticles(array $params): array;

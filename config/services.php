@@ -36,17 +36,17 @@ return [
     ],
 
     'news_api' => [
-        'key' => 'a709ea6fe90e45ad934fbb54d39ad9ed',
-        'base_url' => 'https://newsapi.org/v2/'
+        'key' => env('NEWS_API_KEY'),
+        'base_url' => env('NEWS_API_BASE_URL', 'https://newsapi.org/v2/')
     ],
 
     'the_guardian' => [
-        'key' => '62a95103-7fdc-477e-b936-b6d2d7ae021d',
-        'base_url' => 'https://content.guardianapis.com/'
+        'key' => env('GUARDIAN_API_KEY'),
+        'base_url' => env('GUARDIAN_BASE_URL', 'https://content.guardianapis.com/')
     ],
 
     'nyt' => [
-        'key' => 'cm5tjhUzNkktslHaZsGokMHhwQkh0ZNd',
-        'base_url' => 'https://api.nytimes.com/svc'
+        'key' => env('NYT_API_KEY'),
+        'base_url' => env('NYT_BASE_URL', 'https://api.nytimes.com/svc')
     ],
 ];
