@@ -63,6 +63,10 @@ Ensure API keys are valid, as some providers have request limits. <br>
 Redis caching is recommended for performance. <br>
 Queue workers should be configured to handle scheduled cache clearing. <br>
 
+<br>
+Docker Implementation<br>
+
+I was trying to integrate docker with this project where i encountered "No such host" response from docker while building in docker file. So that i couldn't integrate the nginx and redis in docker. There is a branch in the project which is unfinished due to this issue. 
 
 
 
